@@ -1,58 +1,57 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+    <KForm :model="model" :rules="rules" ref="kform">
+      <KFormItem label="用户名" prop="username">
+        <KInput v-model="model.username"></KInput>
+      </KFormItem>
+      <KFormItem label="密码" prop="password">
+        <KInput v-model="model.password"></KInput>
+      </KFormItem>
+      <KFormItem>
+        <button @click="login">登录</button>
+      </KFormItem>
+    </KForm>
   </div>
 </template>
 
 <script>
+import KFormItem from "./KFormItem.vue";
+import KInput from "./KInput.vue";
+import KForm from "./KForm.vue";
+import Notice from "./Notice.vue";
+import createComponent from "../utils/create";
+
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  name: "HelloWorld",
+  components: {
+    KFormItem,
+    KInput,
+    KForm,
+  },
+  data() {
+    return {
+      model: {
+        username: "",
+        password: "",
+      },
+      rules: {
+        username: [{ required: true, message: "用户名不能为空" }],
+        password: [{ required: true, message: "密码不能为空" }],
+      },
+    };
+  },
+  methods: {
+    login() {
+      this.$refs.kform.validata((bool) => {
+        createComponent(Notice, {
+          title: "提示信息",
+          msg: bool ? "登录成功" : "登录失败",
+        });
+      });
+    },
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
-</style>
+<style scoped></style>

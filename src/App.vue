@@ -1,19 +1,28 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <router-link to="/home">Home</router-link>
+    <span> | </span>
+    <router-link to="/about">About</router-link>
+    <router-view></router-view>
+    <p>counter: {{ $Store.state.counter }}</p>
+    <button @click="$Store.commit('add')">add counter</button>
+    <button @click="$Store.dispath('add')">async add counter</button>
+    <p>doubleCounter: {{ $Store.getters.doubleCounter }}</p>
+    <p>threeCounter: {{ $Store.getters.threeCounter }}</p>
+    <button @click="$Store.getters.doubleCounter++">add doubleCounter</button>
+    <!-- <HelloWorld /> -->
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from "./components/HelloWorld.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    // HelloWorld,
+  },
+};
 </script>
 
 <style>
